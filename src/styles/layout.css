@@ -1,0 +1,17 @@
+@layer base {
+  /* 1rem = 10px */
+  html {
+    font-size: 62.5%;
+  }
+
+  html,
+  body {
+    min-height: 100dvh;
+    width: 100%;
+  }
+
+  /* 브라우저 기본 16px 본문 크기 유지 */
+  body {
+    font-size: 1.6rem;
+  }
+}
