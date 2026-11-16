@@ -6,15 +6,12 @@ closes #
 
 ## 📝 작업 내용
 
-1. Next.js App Router 프로젝트에 FSD(Feature-Sliced Design) 레이어를 위한 폴더 구조를 추가했습니다.
+1. Next.js App Router 프로젝트에 FSD(Feature-Sliced Design)의 최소 레이어(app + views + shared)를 위한 폴더 구조를 추가했습니다.
 
    ```text
    src/
-   ├── app/        # Next.js 라우트, 레이아웃, 전역 프로바이더
-   ├── views/      # FSD pages 레이어: 라우트별 화면 조합
-   ├── widgets/    # 독립적인 큰 UI 블록
-   ├── features/   # 사용자가 수행하는 행동
-   ├── entities/   # 핵심 비즈니스 개념
+   ├── app/        # Next.js 라우트, 레이아웃, 전역 설정
+   ├── views/      # FSD pages 레이어: 화면 단위 코드
    └── shared/     # 도메인과 무관한 재사용 코드
        ├── api/
        ├── config/
@@ -24,7 +21,7 @@ closes #
 
 2. 아직 구현되지 않은 레이어는 `.gitkeep`으로만 관리합니다. 화면, 라우트, 도메인 모델, 목 데이터, 기능 UI는 추가하지 않았습니다.
 
-3. 레이어별 책임과 의존성 규칙은 `docs/architecture/fsd.md`에 문서화했습니다.
+3. 레이어별 책임, 의존성 규칙, 레이어 추가 기준은 `docs/architecture/fsd.md`에 문서화했습니다.
 
 ## 💬 공유 사항
 
@@ -32,14 +29,16 @@ closes #
 
 기술 유형 중심의 `components`, `hooks`, `utils` 구조는 프로젝트가 커질수록 특정 기능과 관련된 파일이 여러 폴더에 흩어질 수 있습니다. FSD는 이벤트 생성, 초대장 공유, 참석 응답처럼 사용자 가치와 도메인 기준으로 코드를 배치할 수 있도록 합니다.
 
+다만 현재 프로젝트 규모와 개발 일정을 고려해, FSD 전체가 아닌 **최소 규칙(app + views + shared)만 도입**하기로 팀에서 결정했습니다.
+
 ```text
-views → widgets → features → entities → shared
+app → views → shared
 ```
 
 - 상위 레이어는 하위 레이어만 import합니다.
-- 같은 레이어의 다른 슬라이스는 직접 import하지 않습니다.
+- `views`의 서로 다른 화면 슬라이스는 직접 import하지 않습니다. 공통 코드는 `shared`로 옮깁니다.
 - 실제 슬라이스를 만들 때 `index.ts`를 public API로 사용합니다.
-- `app/**/page.tsx`는 Next.js 라우팅에 집중하고, 화면 구현은 추후 `views`에서 조합합니다.
+- `app/**/page.tsx`는 Next.js 라우팅에 집중하고, 화면 구현은 `views`에서 조합합니다.
 
 ### `pages` 대신 `views`를 사용하는 이유
 
@@ -56,9 +55,20 @@ src/views → FSD pages 레이어
 
 ## ETC
 
-- 이후 기능 구현 시 필요한 레이어에만 슬라이스를 추가합니다.
-  - 이벤트 도메인: `entities/event`
-  - 이벤트 생성: `features/create-event`
-  - 초대장 공유: `features/share-invitation`
-  - 이벤트 상세 화면: `views/event-detail`
-- 빈 기능 폴더를 미리 만들지 않아, 현재 구조가 실제 구현 범위보다 과도하게 커지지 않도록 했습니다.
+### FSD 도입 범위 결정
+
+검토한 방향은 세 가지였습니다.
+
+| 방향 | 장점 | 우려 사항 |
+| --- | --- | --- |
+| FSD 전체 도입 | 확장 규칙이 명확하고, 기능 증가 시 일관성을 유지하기 쉬움 | 현재 규모에는 빈 폴더와 보일러플레이트가 많아질 수 있음 |
+| **최소 규칙만 도입 (채택)** | 현재는 단순하게 시작하고, 필요할 때만 확장 가능 | “언제 레이어를 분리할지” 합의가 필요함 |
+| FSD 미도입 | 익숙한 구조로 빠르게 개발 가능 | 기능이 늘어나면 구조를 다시 정리하는 비용이 발생할 수 있음 |
+
+`entities`, `features`, `widgets`는 미리 만들지 않고, 아래와 같은 필요가 생겼을 때 **팀 논의 후** 추가합니다.
+
+- 여러 화면에서 이벤트/초대장 데이터를 공통으로 다루게 될 때 → `entities`
+- 초대장 공유, 참석 응답처럼 독립적인 사용자 행동과 로직이 생길 때 → `features`
+- 여러 기능과 도메인을 조합한 큰 UI 블록이 재사용될 때 → `widgets`
+
+레이어를 추가할 때는 `docs/architecture/fsd.md`의 구조와 의존성 규칙도 함께 갱신합니다.
