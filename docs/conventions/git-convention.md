@@ -52,7 +52,19 @@ PR을 열면 [`.github/pull_request_template.md`](../../.github/pull_request_tem
 
 팀원이 별도 설명 없이 PR만 읽어도 맥락을 파악할 수 있는 수준으로 작성한다.
 
+### 자동화
+
+PR을 열면 GitHub Actions가 아래 작업을 자동으로 수행한다.
+
+| 워크플로우 | 동작 |
+| --- | --- |
+| [`pr-triage.yml`](../../.github/workflows/pr-triage.yml) | 작성자를 assignee로 지정하고, 작성자를 제외한 팀원에게 리뷰를 요청하고, 작성자 라벨을 붙인다. PR 제목 접두사(`[Feat]` 등)에 맞는 라벨을 붙이며, 제목을 수정하면 라벨도 다시 계산한다. |
+| [`ci.yml`](../../.github/workflows/ci.yml) | `develop`, `main` 대상 PR에서 `pnpm lint`, `pnpm build`를 실행하고 결과를 PR 코멘트로 남긴다. 실패하면 체크도 실패한다. |
+| [`deploy.yml`](../../.github/workflows/deploy.yml) | `main`에 push되면 `seunghye-rain/SWYP-INVITE-FE` fork의 `main`을 동일하게 강제 동기화한다. 배포는 fork에 연결된 배포 서비스가 담당한다. |
+
+팀원이 바뀌면 `pr-triage.yml`의 `TEAM`(GitHub 아이디 → 사람 라벨)을 수정한다.
+
 ### 머지
 
 - 작업 브랜치의 PR은 `develop`을 대상으로 연다.
-- 머지 전 로컬에서 `pnpm lint`, `pnpm build`가 통과하는지 확인한다.
+- 머지 전 로컬에서 `pnpm lint`, `pnpm build`가 통과하는지 확인한다. CI가 실패한 PR은 머지하지 않는다.
