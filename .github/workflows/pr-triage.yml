@@ -31,7 +31,6 @@ jobs:
               docs: "Docs",
               style: "Style",
               refactor: "Refactor",
-              test: "Test",
               chore: "Chore",
               deploy: "Deploy",
             };
