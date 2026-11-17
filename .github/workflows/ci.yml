@@ -16,6 +16,9 @@ jobs:
   build:
     name: Lint & Build
     runs-on: ubuntu-latest
+    env:
+      # PR 검사용 임시 환경에서는 git hook이 필요 없으므로 husky의 prepare를 건너뜁니다.
+      HUSKY: 0
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,6 +31,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Run format check
+        id: format
+        run: pnpm format:check
+        continue-on-error: true
 
       - name: Run lint
         id: lint
@@ -42,9 +50,17 @@ jobs:
       - name: Evaluate lint and build status
         id: status
         run: |
+          format_result="${{ steps.format.outcome }}"
           lint_result="${{ steps.lint.outcome }}"
           build_result="${{ steps.build.outcome }}"
           overall_result="success"
+
+          if [ "$format_result" == "success" ]; then
+            format_message="포맷 통과 ✅"
+          else
+            format_message="포맷 실패 ❌"
+            overall_result="failed"
+          fi
 
           if [ "$lint_result" == "success" ]; then
             lint_message="린트 통과 ✅"
@@ -61,9 +77,9 @@ jobs:
           fi
 
           if [ "$overall_result" == "success" ]; then
-            message="모든 검사 통과 💫\n- $lint_message\n- $build_message"
+            message="모든 검사 통과 💫\n- $format_message\n- $lint_message\n- $build_message"
           else
-            message="일부 검사 실패 ⚠️\n- $lint_message\n- $build_message"
+            message="일부 검사 실패 ⚠️\n- $format_message\n- $lint_message\n- $build_message"
           fi
 
           echo "result=$overall_result" >> $GITHUB_OUTPUT
@@ -79,7 +95,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `### 빌드 및 린트 결과\n${message}\n\n[실행 로그 보기](${runUrl})`,
+              body: `### 포맷, 린트 및 빌드 결과\n${message}\n\n[실행 로그 보기](${runUrl})`,
             });
 
       - name: Fail job if any step failed
