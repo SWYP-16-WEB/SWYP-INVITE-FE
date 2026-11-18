@@ -24,10 +24,6 @@ const eslintConfig = defineConfig([
       'no-var': 'error',
       'prefer-const': 'error',
       'prefer-template': 'error',
-      'react/jsx-pascal-case': 'error',
-      'react/button-has-type': 'error',
-      'react/no-array-index-key': 'warn',
-      'import/no-default-export': 'error',
 
       'no-restricted-imports': ['error', { patterns: [relativeImportPattern] }],
 
@@ -59,13 +55,24 @@ const eslintConfig = defineConfig([
     },
   },
 
+  // react·import 플러그인은 eslint-config-next가 등록하는 파일 범위에서만 적용 (.cjs 제외)
+  {
+    files: ['**/*.{js,jsx,mjs,ts,tsx,mts,cts}'],
+    rules: {
+      'react/jsx-pascal-case': 'error',
+      'react/button-has-type': 'error',
+      'react/no-array-index-key': 'warn',
+      'import/no-default-export': 'error',
+    },
+  },
+
   // Next.js 특수 파일과 설정 파일은 default export 허용
   {
     files: [
       'src/app/**/{page,layout,loading,error,not-found,global-error,template,default,route}.{ts,tsx}',
       'src/app/**/{opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}',
       'src/{middleware,proxy,instrumentation}.ts',
-      '*.config.{js,mjs,cjs,ts}',
+      '*.config.{js,mjs,ts}',
     ],
     rules: {
       'import/no-default-export': 'off',
