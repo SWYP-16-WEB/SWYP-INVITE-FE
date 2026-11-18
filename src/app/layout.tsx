@@ -1,9 +1,8 @@
-import "@/styles/globals.css";
-import type { Metadata } from "next";
-import { QueryProvider } from "./providers/QueryProvider";
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
+
+import { QueryProvider } from './providers/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="ko">
+    <html lang='ko'>
       <body>
         <QueryProvider>{children}</QueryProvider>
       </body>
