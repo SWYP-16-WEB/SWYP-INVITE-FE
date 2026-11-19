@@ -4,7 +4,6 @@
 
 ## 기본 규칙
 
-- 작업 전 현재 브랜치와 `git status`, 관련 변경사항을 확인합니다.
 - 요청에 해당하는 문서와 기존 코드를 먼저 읽습니다.
 - 현재 적용하는 구조는 `app → views → shared`입니다. 추가 레이어는 팀 합의 후 도입합니다.
 - 사용자 변경사항을 임의로 되돌리거나 요청과 무관한 수정을 섞지 않습니다.
@@ -13,7 +12,11 @@
 
 ## Repository
 
-- Stack: Next.js App Router, React, TypeScript, Tailwind CSS
+- Stack: Next.js 16.4.6 (App Router), React 19.3.0, TypeScript 5.9.3, Tailwind CSS 4.3.3
+- 서버 상태 관리: TanStack Query
+- 서버 API 통신: Axios
+- 서버 연동 도구는 별도 작업 브랜치에서 세팅했습니다. 작업 브랜치의 `package.json`과 기존 연동 코드에 반영되었는지 확인한 뒤 사용합니다.
+- 버전 기준: `package.json`과 `pnpm-lock.yaml`을 확인하고, 의존성 변경 시 이 안내도 갱신합니다.
 - Package manager: `package.json`의 `packageManager`에 지정된 pnpm
 - 개발 통합 브랜치: `develop`
 - 배포 브랜치: `main`
@@ -42,19 +45,26 @@
 | 공용 UI 구현             | `.agents/skills/shared-components/SKILL.md` | 구조·코딩 컨벤션, 기존 공용 UI        |
 | Figma 디자인 구현        | `.agents/skills/figma/SKILL.md`             | 제공된 디자인, 코딩·스타일링 컨벤션   |
 | 코드 품질 점검           | `.agents/skills/code-quality/SKILL.md`      | 코딩 컨벤션, tooling                  |
-| 커밋                     | `.agents/skills/git/commit/SKILL.md`        | commit                                |
-| PR 작성                  | `.agents/skills/git/pr/SKILL.md`            | git-convention, PR 템플릿             |
+| 커밋                     | `.agents/skills/git-commit/SKILL.md`        | commit                                |
+| PR 작성                  | `.agents/skills/git-pr/SKILL.md`            | git-convention, PR 템플릿             |
 
 스킬 작성 후에는 해당 작업 전 `SKILL.md`를 읽고 참조 문서와 절차를 따릅니다. 등록되지 않은 작업은 관련 문서와 기존 코드를 기준으로 진행합니다.
 
+## 역할별 에이전트
+
+- 역할과 사용 흐름은 [agents-index.md](docs/agents/agents-index.md)를 참조합니다.
+- Codex는 `.codex/agents/`의 TOML 설정을, Claude는 `.claude/agents`를 통해 공통 역할 지침을 읽습니다.
+- Claude의 스킬 경로 `.claude/skills`는 `.agents/skills`를 가리키는 심볼릭 링크입니다.
+- 역할별 위임은 사용자가 요청한 경우 사용하며, 작은 작업에 모든 역할을 강제하지 않습니다.
+
 ## 작업 절차
 
-1. 현재 브랜치와 `git status`, `git diff`를 확인해 기존 변경사항을 파악합니다.
+1. 현재 브랜치와 `git status`, `git diff`, `git diff --cached`를 확인해 기존 변경사항을 파악합니다.
 2. 요청 범위와 완료 기준을 정하고, Skill Routing에 따라 관련 문서와 기존 구현을 읽습니다.
 3. 현재 폴더 구조와 코딩·스타일링 컨벤션에 맞춰 필요한 부분만 수정합니다.
 4. 서버 연동 작업은 API 명세와 기존 요청 코드를 확인하고, 로딩·에러·빈 상태를 처리합니다. 미확정 사항은 사용자에게 확인합니다.
 5. 구조나 규칙이 바뀌었다면 관련 문서를 함께 갱신합니다.
-6. 아래 검증을 마친 뒤 최종 diff를 확인하고 변경 내용, 검증 결과, 남은 사항을 전달합니다.
+6. 아래 검증을 마친 뒤 `git diff`와 `git diff --cached`로 최종 변경사항을 확인하고 변경 내용, 검증 결과, 남은 사항을 전달합니다.
 
 ## 검증 절차
 

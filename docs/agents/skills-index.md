@@ -17,8 +17,8 @@
 | `shared-components` | 도메인과 무관한 공용 UI 구현·재사용 판단   | 작성 예정 |
 | `figma`             | Figma 디자인을 코드와 디자인 토큰으로 반영 | 작성 예정 |
 | `code-quality`      | 구현 마무리·리팩터링 시 코드 품질 점검     | 작성 예정 |
-| `git/commit`        | 변경사항 분리·커밋 메시지 작성             | 작성 예정 |
-| `git/pr`            | PR 제목·본문 작성                          | 작성 예정 |
+| `git-commit`        | 변경사항 분리·커밋 메시지 작성             | 작성 예정 |
+| `git-pr`            | PR 제목·본문 작성                          | 작성 예정 |
 
 ## 기본 구조
 
@@ -30,9 +30,8 @@ AGENTS.md
 ├── shared-components/.gitkeep
 ├── figma/.gitkeep
 ├── code-quality/.gitkeep
-└── git/
-    ├── commit/.gitkeep
-    └── pr/.gitkeep
+├── git-commit/.gitkeep
+└── git-pr/.gitkeep
 docs/agents/skills-index.md
 ```
 
@@ -46,6 +45,9 @@ docs/agents/skills-index.md
 
 ## 스킬 추가 기준
 
+- 스킬 원본은 `.agents/skills/`에만 작성합니다. `.claude/skills`는 해당 폴더를 가리키는 심볼릭 링크입니다.
+- 스킬은 `.agents/skills/<스킬명>/SKILL.md` 한 단계 구조로 작성합니다.
+- 두 도구 호환을 위해 `SKILL.md` frontmatter에는 `name`, `description`만 사용합니다.
 - 각 폴더에 `SKILL.md`를 작성하고 `.gitkeep`을 제거합니다.
 - 스킬에는 설명, 참조 문서, 트리거, 수행 절차, 점검 항목을 정리합니다.
 - 기존 컨벤션은 복사하지 않고 원문 문서를 참조합니다.
