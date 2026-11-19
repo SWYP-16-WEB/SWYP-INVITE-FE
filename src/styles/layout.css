@@ -12,6 +12,10 @@
 
   /* 브라우저 기본 16px 본문 크기 유지 */
   body {
+    @apply font-sans;
+
     font-size: 1.6rem;
+    line-height: var(--line-height-body-1);
+    letter-spacing: 0;
   }
 }
