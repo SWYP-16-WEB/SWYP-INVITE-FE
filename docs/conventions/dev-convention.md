@@ -65,6 +65,7 @@
 - 크기·간격·둥글기·글자 크기 등 수치가 들어가는 값은 Tailwind 기본 스케일(`p-4`, `text-sm`, `rounded-lg` 등) 대신 **rem 단위 임의값**으로 작성한다. 디자인 시안의 px 값을 10으로 나눠 rem으로 옮긴다.
   - ✅ `rounded-[1rem] rounded-[6rem] px-[3rem] py-[1.6rem] gap-[0.8rem] text-[1.4rem]`
   - ❌ `rounded-lg px-12 py-4 gap-2 text-sm`
+- 디자인 시스템의 타이포그래피는 `src/styles/font.token.css`의 조합 유틸리티(`title-b-24`, `body-sb-16` 등)를 사용한다. 유틸리티 내부 글자 크기는 rem, 공통 행간은 단위 없는 `1.5`로 정의한다.
 - 수치가 없는 유틸리티(`flex`, `items-center`, `font-bold`, `w-full`, `min-h-screen` 등)는 그대로 사용한다.
 - 클래스를 조건부로 합치거나 외부에서 `className`을 받아 덮어쓸 때는 `cn` 유틸(`@/shared/utils/cn`)을 사용한다.
 

@@ -1,8 +1,17 @@
 import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 
 import { QueryProvider } from './providers/QueryProvider';
+
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  variable: '--font-pretendard',
+  weight: '45 920',
+  style: 'normal',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -11,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang='ko'>
+    <html lang='ko' className={pretendard.variable}>
       <body>
         <QueryProvider>{children}</QueryProvider>
       </body>
