@@ -10,16 +10,29 @@
 
 ## 컬러
 
-| Figma 스타일       | 토큰                         | 값        | 사용 예시                |
-| ------------------ | ---------------------------- | --------- | ------------------------ |
-| Brand/Primary      | `--color-brand-primary`      | `#A7C5FB` | `bg-brand-primary`       |
-| Brand/Secondary    | `--color-brand-secondary`    | `#80ABF9` | `border-brand-secondary` |
-| Brand/Lime         | `--color-brand-lime`         | `#DAF99D` | `bg-brand-lime`          |
-| Brand/Light        | `--color-brand-light`        | `#F4F4F4` | `bg-brand-light`         |
-| Text/White         | `--color-text-white`         | `#FFFFFF` | `text-text-white`        |
-| Background/Primary | `--color-background-primary` | `#081412` | `bg-background-primary`  |
+`color.token.css`의 현재 토큰명을 기준으로 사용합니다.
 
-컬러는 `bg-*`, `text-*`, `border-*` 등 Tailwind 유틸리티에서 사용합니다. 각 화면에서 필요한 배경·텍스트 컬러를 지정합니다.
+| 디자인 스타일      | CSS 토큰                  | 값        | 사용 예시                |
+| ------------------ | ------------------------- | --------- | ------------------------ |
+| Brand/Primary      | `--color-brand-primary`   | `#A7C5FB` | `bg-brand-primary`       |
+| Brand/Secondary    | `--color-brand-secondary` | `#80ABF9` | `border-brand-secondary` |
+| Brand/Lime         | `--color-brand-lime`      | `#DAF99D` | `bg-brand-lime`          |
+| Brand/Light        | `--color-brand-light`     | `#F4F4F4` | `bg-brand-light`         |
+| Text/White         | `--color-text-white`      | `#FFFFFF` | `text-text-white`        |
+| Background/Primary | `--color-bg-primary`      | `#081412` | `bg-bg-primary`          |
+
+토큰 이름의 `brand-*`는 브랜드 컬러, `text-*`는 텍스트 컬러, `bg-*`는 배경 컬러의 역할을 나타냅니다.
+
+Tailwind 클래스는 **속성 접두사 + `--color-` 뒤의 토큰 이름**으로 작성합니다. 따라서 `--color-bg-primary`의 배경색 클래스는 `bg-bg-primary`, `--color-text-white`의 텍스트색 클래스는 `text-text-white`입니다.
+
+```tsx
+<section className='bg-bg-primary text-text-white'>
+  <h1 className='title-b-24'>모임 준비하기</h1>
+  <p className='body-md-14 text-brand-primary'>모임을 함께 준비해 보세요.</p>
+</section>
+```
+
+컬러는 `bg-*`, `text-*`, `border-*` 등 필요한 속성에서 사용할 수 있습니다. 토큰의 역할과 화면의 용도에 맞춰 선택합니다.
 
 ## 폰트
 
