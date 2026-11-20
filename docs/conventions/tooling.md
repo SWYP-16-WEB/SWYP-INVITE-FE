@@ -51,9 +51,35 @@ PR(`develop`, `main` 대상)마다 `pnpm format:check` → `pnpm lint` → `pnpm
 
 ## 스크립트
 
-| 스크립트            | 설명                         |
-| ------------------- | ---------------------------- |
-| `pnpm lint`         | ESLint 검사                  |
-| `pnpm lint:fix`     | ESLint 자동 수정             |
-| `pnpm format`       | Prettier로 전체 파일 포맷    |
-| `pnpm format:check` | 포맷 위반 여부만 검사 (CI용) |
+| 스크립트            | 설명                                     |
+| ------------------- | ---------------------------------------- |
+| `pnpm lint`         | ESLint 검사                              |
+| `pnpm lint:fix`     | ESLint 자동 수정                         |
+| `pnpm format`       | Prettier로 전체 파일 포맷                |
+| `pnpm format:check` | 포맷 위반 여부만 검사 (CI용)             |
+| `pnpm build:icons`  | SVG → React 아이콘 컴포넌트 생성         |
+| `pnpm barrels`      | `shared/ui`, `shared/layout` barrel 생성 |
+
+## 아이콘 (SVGR)
+
+`scripts/generate-icon-exports.ts` — `src/shared/assets/svg/*.svg`를 읽어 `src/shared/assets/icons/*.tsx`와 `src/shared/assets/index.ts`를 생성합니다.
+
+- 파일명 → 컴포넌트명: `arrow-left.svg` → `ArrowLeftIcon` (`Icon` 접미사 자동 부여)
+- `fill`/`stroke` 색상은 `currentColor`로 치환합니다. (`none`, `url(#...)`은 유지) → `text-*`로 색상 제어
+- `viewBox`는 svgo에서 제거하지 않도록 설정하고, 그래도 빠지면 원본 값을 다시 주입합니다.
+- 프로젝트 컨벤션에 맞춰 named export로 생성하며, Prettier 설정을 그대로 적용합니다.
+- `pnpm build` 실행 시 `prebuild`로 `build:icons` → `barrels`가 먼저 자동 실행됩니다. SVG만 추가하고 바로 빌드해도 반영됩니다.
+- `pnpm dev`에서는 자동 실행되지 않으므로, 개발 중 SVG를 추가했다면 `pnpm build:icons`를 직접 실행하세요. 생성 파일은 함께 커밋합니다.
+
+```tsx
+import { HomeIcon } from '@/shared/assets';
+
+<HomeIcon className='text-primary' width={20} height={20} />;
+```
+
+## Barrel Export
+
+`scripts/generate-barrel-exports.ts` — 순환 참조와 불필요한 의존성을 막기 위해 공개 API 역할을 하는 `src/shared/ui`, `src/shared/layout`에만 적용합니다.
+
+1. 컴포넌트 폴더(`src/shared/ui/button/`)에 `index.ts`를 작성합니다.
+2. `pnpm barrels`를 실행하면 `src/shared/ui/index.ts`가 갱신됩니다. (`index.ts`가 없는 폴더는 제외)
