@@ -1,4 +1,5 @@
 @import 'tailwindcss';
-@import './tokens.css';
+@import './color.token.css';
+@import './font.token.css';
 @import './reset.css';
 @import './layout.css';

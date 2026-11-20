@@ -15,7 +15,7 @@
     @apply font-sans;
 
     font-size: 1.6rem;
-    line-height: var(--line-height-body-1);
+    line-height: 1.5;
     letter-spacing: 0;
   }
 }
