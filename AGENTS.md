@@ -29,6 +29,7 @@
 | 코딩·스타일링 컨벤션  | [dev-convention.md](docs/conventions/dev-convention.md)      |
 | 프로젝트 구조·의존성  | [fsd.md](docs/architecture/fsd.md)                           |
 | 포맷팅·Lint·Git hook  | [tooling.md](docs/conventions/tooling.md)                    |
+| 디자인 토큰·사용 예시 | [design-tokens.md](docs/design/design-tokens.md)             |
 | 커밋 메시지·분리 기준 | [commit.md](docs/conventions/commit.md)                      |
 | 브랜치·PR 규칙        | [git-convention.md](docs/conventions/git-convention.md)      |
 | PR 본문 템플릿        | [pull_request_template.md](.github/pull_request_template.md) |
@@ -36,19 +37,19 @@
 
 ## Skill Routing
 
-현재는 초기 구조만 준비한 상태이며, 아래 스킬은 모두 작성 예정입니다. `SKILL.md`가 추가되기 전에는 해당 작업의 프로젝트 문서를 직접 확인합니다.
+현재 `figma` 스킬을 사용할 수 있습니다. 나머지는 작성 예정이며, `SKILL.md`가 없는 작업은 해당 프로젝트 문서를 직접 확인합니다.
 
-| 작업                     | 예정 스킬 경로                              | 현재 참조                             |
-| ------------------------ | ------------------------------------------- | ------------------------------------- |
-| 새 작업·구조·컨벤션 확인 | `.agents/skills/project-rule/SKILL.md`      | Docs Map, 관련 코드                   |
-| 페이지·route·화면 구현   | `.agents/skills/app-page/SKILL.md`          | 구조·코딩 컨벤션, 설치된 Next.js 문서 |
-| 공용 UI 구현             | `.agents/skills/shared-components/SKILL.md` | 구조·코딩 컨벤션, 기존 공용 UI        |
-| Figma 디자인 구현        | `.agents/skills/figma/SKILL.md`             | 제공된 디자인, 코딩·스타일링 컨벤션   |
-| 코드 품질 점검           | `.agents/skills/code-quality/SKILL.md`      | 코딩 컨벤션, tooling                  |
-| 커밋                     | `.agents/skills/git-commit/SKILL.md`        | commit                                |
-| PR 작성                  | `.agents/skills/git-pr/SKILL.md`            | git-convention, PR 템플릿             |
+| 작업                     | 스킬 경로                                   | 현재 참조                              |
+| ------------------------ | ------------------------------------------- | -------------------------------------- |
+| 새 작업·구조·컨벤션 확인 | `.agents/skills/project-rule/SKILL.md`      | Docs Map, 관련 코드                    |
+| 페이지·route·화면 구현   | `.agents/skills/app-page/SKILL.md`          | 구조·코딩 컨벤션, 설치된 Next.js 문서  |
+| 공용 UI 구현             | `.agents/skills/shared-components/SKILL.md` | 구조·코딩 컨벤션, 기존 공용 UI         |
+| Figma 디자인 구현        | `.agents/skills/figma/SKILL.md`             | 디자인 토큰 문서·CSS, 구조·코딩 컨벤션 |
+| 코드 품질 점검           | `.agents/skills/code-quality/SKILL.md`      | 코딩 컨벤션, tooling                   |
+| 커밋                     | `.agents/skills/git-commit/SKILL.md`        | commit                                 |
+| PR 작성                  | `.agents/skills/git-pr/SKILL.md`            | git-convention, PR 템플릿              |
 
-스킬 작성 후에는 해당 작업 전 `SKILL.md`를 읽고 참조 문서와 절차를 따릅니다. 등록되지 않은 작업은 관련 문서와 기존 코드를 기준으로 진행합니다.
+사용 가능한 스킬에 해당하는 작업은 먼저 `SKILL.md`를 읽고 참조 문서와 절차를 따릅니다. 미작성 스킬이나 등록되지 않은 작업은 관련 문서와 기존 코드를 기준으로 진행합니다.
 
 ## 역할별 에이전트
 
