@@ -31,4 +31,4 @@ jobs:
       - name: Push main to forked repo
         env:
           TOKEN: ${{ secrets.AUTO_ACTIONS }}
-        run: git push -f "https://x-access-token:${TOKEN}@github.com/seunghye-rain/SWYP-INVITE-FE.git" main
+        run: git push -f "https://x-access-token:${TOKEN}@github.com/seunghye-rain/SWYP-MOIMZIP-FE.git" main
