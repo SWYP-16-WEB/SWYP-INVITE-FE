@@ -64,6 +64,9 @@ PR(`develop`, `main` 대상)마다 `pnpm format:check` → `pnpm lint` → `pnpm
 
 `scripts/generate-icon-exports.ts` — `src/shared/assets/svg/*.svg`를 읽어 `src/shared/assets/icons/*.tsx`와 `src/shared/assets/index.ts`를 생성합니다.
 
+- SVG 파일명은 영어 소문자 kebab-case로 작성합니다. (`arrow-left.svg`) `icon_` 같은 접두사는 붙이지 않습니다.
+  - 한글·공백·대문자·`_`가 들어간 파일명은 생성 단계에서 오류로 막습니다. 한글 파일명은 OS별 유니코드 정규화(NFC/NFD) 차이로 컴포넌트 이름이 달라질 수 있기 때문입니다.
+  - Figma에서 내보낸 `icon_생일.svg` 같은 파일은 `birthday.svg`처럼 이름을 바꿔 추가합니다.
 - 파일명 → 컴포넌트명: `arrow-left.svg` → `ArrowLeftIcon` (`Icon` 접미사 자동 부여)
 - `fill`/`stroke` 색상은 `currentColor`로 치환합니다. (`none`, `url(#...)`은 유지) → `text-*`로 색상 제어
 - `viewBox`는 svgo에서 제거하지 않도록 설정하고, 그래도 빠지면 원본 값을 다시 주입합니다.

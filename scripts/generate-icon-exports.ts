@@ -30,6 +30,10 @@ export const ${variables.componentName} = (${variables.props}) => (
 );
 `;
 
+// SVG 파일명은 영어 소문자 kebab-case만 허용한다. (home.svg, arrow-left.svg)
+// 한글 파일명은 OS별 유니코드 정규화(NFC/NFD) 차이로 컴포넌트 이름이 달라질 수 있어 막는다.
+const SVG_FILENAME_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*\.svg$/;
+
 // home.svg → HomeIcon, arrow-left.svg → ArrowLeftIcon
 const toComponentName = (filename: string) => {
   const pascalName = filename
@@ -44,10 +48,11 @@ const toComponentName = (filename: string) => {
 
 // fill/stroke 색상을 currentColor로 바꿔 Tailwind `text-*`로 색을 제어할 수 있게 한다.
 // "none"과 "url(#...)"(그라디언트/패턴 참조)는 색상이 아니라 구조적 값이므로 유지한다.
+// `fill = "#f00"`처럼 등호 앞뒤에 공백이 있는 속성도 유효한 SVG이므로 함께 변환한다.
 const normalizeColorAttributes = (svg: string) =>
-  svg.replace(/\b(fill|stroke)=(["'])(?!none\2|url\()[^"']*\2/gi, '$1="currentColor"');
+  svg.replace(/\b(fill|stroke)\s*=\s*(["'])(?!none\2|url\()[^"']*\2/gi, '$1="currentColor"');
 
-const extractViewBox = (svg: string) => svg.match(/viewBox=["']([^"']+)["']/i)?.[1] ?? null;
+const extractViewBox = (svg: string) => svg.match(/\bviewBox\s*=\s*["']([^"']+)["']/i)?.[1] ?? null;
 
 const formatWithPrettier = async (code: string, filePath: string) => {
   const projectPrettierConfig = (await prettier.resolveConfig(filePath)) ?? {};
@@ -99,7 +104,9 @@ const generateIconComponent = async (file: string): Promise<GeneratedIcon> => {
 };
 
 const generateIndexFile = async (icons: GeneratedIcon[]) => {
-  const exportLines = icons
+  // 파일명 순(home-party.svg → home.svg)이 아닌 export 경로 순으로 정렬해 simple-import-sort와 맞춘다.
+  const exportLines = [...icons]
+    .sort((a, b) => a.componentName.localeCompare(b.componentName, 'en'))
     .map(({ componentName }) => `export { ${componentName} } from './icons/${componentName}';`)
     .join('\n');
 
@@ -120,6 +127,13 @@ const generate = async () => {
   try {
     const files = await readdir(SVG_DIR);
     const svgFiles = files.filter((file) => file.toLowerCase().endsWith('.svg')).sort();
+
+    const invalidFiles = svgFiles.filter((file) => !SVG_FILENAME_PATTERN.test(file));
+    if (invalidFiles.length > 0) {
+      throw new Error(
+        `SVG 파일명은 영어 소문자 kebab-case로 작성해주세요. (예: arrow-left.svg)\n${invalidFiles.join('\n')}`,
+      );
+    }
 
     const duplicated = svgFiles
       .map(toComponentName)
